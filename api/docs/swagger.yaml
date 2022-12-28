@@ -1,0 +1,1195 @@
+definitions:
+  template_variables.CreateResponse:
+    properties:
+      id:
+        type: string
+    type: object
+  template_variables.EmptyResponse:
+    type: object
+  template_variables.FailureResponse:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  template_variables.SuccessResponse:
+    properties:
+      success:
+        example: true
+        type: boolean
+    type: object
+  user_service.GetAllOrganizationResponse:
+    properties:
+      count:
+        type: integer
+      project:
+        items:
+          $ref: '#/definitions/user_service.Organization'
+        type: array
+      simple:
+        items:
+          $ref: '#/definitions/user_service.Organization'
+        type: array
+    type: object
+  user_service.GetAllOrganizationsResponse:
+    properties:
+      count:
+        type: integer
+      organizations:
+        items:
+          $ref: '#/definitions/user_service.Organization'
+        type: array
+    type: object
+  user_service.GetAllPermissionsResponse:
+    properties:
+      count:
+        type: integer
+      permissions:
+        items:
+          $ref: '#/definitions/user_service.Permission'
+        type: array
+    type: object
+  user_service.GetAllRolesResponse:
+    properties:
+      count:
+        type: integer
+      roles:
+        items:
+          $ref: '#/definitions/user_service.Role'
+        type: array
+    type: object
+  user_service.Organization:
+    properties:
+      code:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      external_id:
+        type: integer
+      full_name:
+        type: string
+      id:
+        type: string
+      inn:
+        type: string
+      name:
+        type: string
+      responsible_orgs:
+        items:
+          $ref: '#/definitions/user_service.ResponsibleUser'
+        type: array
+      soato:
+        type: integer
+      status:
+        type: boolean
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  user_service.Permission:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      label:
+        type: string
+      name:
+        type: string
+      ru_name:
+        type: string
+    type: object
+  user_service.ResponsibleUser:
+    properties:
+      organization_id:
+        type: string
+      soato:
+        type: string
+    type: object
+  user_service.Role:
+    properties:
+      code:
+        type: integer
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      organization:
+        $ref: '#/definitions/user_service.Organization'
+        type: object
+      permissions:
+        items:
+          $ref: '#/definitions/user_service.Permission'
+        type: array
+      status:
+        type: boolean
+      updated_at:
+        type: string
+    type: object
+  var_api_gateway.EntityFilesSwag:
+    properties:
+      comment:
+        type: string
+    type: object
+  var_api_gateway.FilesResponse:
+    properties:
+      file_path:
+        type: string
+      file_url:
+        type: string
+    type: object
+  var_user_service.CreateUpdateOrganizationSwag:
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      external_id:
+        type: integer
+      full_name:
+        type: string
+      id:
+        type: string
+      inn:
+        type: string
+      name:
+        type: string
+      responsible_orgs:
+        items:
+          $ref: '#/definitions/var_user_service.ResponsibleUser'
+        type: array
+      soato:
+        type: integer
+      status:
+        type: boolean
+      type:
+        type: string
+    type: object
+  var_user_service.CreateUpdatePermissionSwag:
+    properties:
+      description:
+        type: string
+      label:
+        type: string
+      name:
+        type: string
+      ru_name:
+        type: string
+    required:
+    - name
+    - ru_name
+    type: object
+  var_user_service.CreateUpdateRoleSwag:
+    properties:
+      code:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+      organization_id:
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+      status:
+        type: boolean
+    required:
+    - name
+    type: object
+  var_user_service.LoginExistsRequest:
+    properties:
+      login:
+        type: string
+    type: object
+  var_user_service.LoginExistsResponse:
+    properties:
+      exist:
+        type: boolean
+    type: object
+  var_user_service.LoginRequest:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  var_user_service.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      verified:
+        type: boolean
+    type: object
+  var_user_service.ResponsibleUser:
+    properties:
+      organization_id:
+        type: string
+      soato:
+        type: string
+    type: object
+  var_user_service.UpdatePassword:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /v1/file-upload:
+    post:
+      consumes:
+      - multipart/form-data
+      - application/json
+      description: API for creating file
+      parameters:
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: use_p
+        in: query
+        name: use_p
+        type: string
+      - description: entity_id
+        in: query
+        name: entity_id
+        type: string
+      - description: property_id
+        in: query
+        name: property_id
+        type: string
+      - description: file_name_id
+        in: query
+        name: file_name_id
+        type: string
+      - description: region
+        in: body
+        name: region
+        required: true
+        schema:
+          $ref: '#/definitions/var_api_gateway.EntityFilesSwag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/var_api_gateway.FilesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Create file
+      tags:
+      - file_upload
+  /v1/image-upload:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: image
+        in: formData
+        name: image
+        required: true
+        type: file
+      - description: entity_id
+        in: query
+        name: entity_id
+        type: string
+      - description: file_name_id
+        in: query
+        name: file_name_id
+        type: string
+      - description: property_id
+        in: query
+        name: property_id
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/var_api_gateway.FilesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      tags:
+      - file_upload
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: API to singin
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/var_user_service.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: login
+      tags:
+      - auth
+  /v1/login-exists:
+    post:
+      consumes:
+      - application/json
+      description: API to singin
+      parameters:
+      - description: Login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.LoginExistsRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/var_user_service.LoginExistsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: login
+      tags:
+      - auth
+  /v1/login-refresh:
+    post:
+      consumes:
+      - application/json
+      description: API to get your access token with refresh
+      parameters:
+      - description: refresh_token
+        in: query
+        name: refresh_token
+        required: true
+        type: string
+      - description: is_applicant
+        in: query
+        name: is_applicant
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/var_user_service.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: if access-token expired, get your access token with refresh
+      tags:
+      - auth
+  /v1/organization:
+    get:
+      consumes:
+      - application/json
+      description: API for getting all organizations
+      parameters:
+      - description: type
+        in: query
+        name: type
+        type: string
+      - description: search
+        in: query
+        name: search
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.GetAllOrganizationsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Getting All Organizations
+      tags:
+      - organization
+    post:
+      consumes:
+      - application/json
+      description: API for creating organization
+      parameters:
+      - description: organization
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.CreateUpdateOrganizationSwag'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/template_variables.CreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create Organization
+      tags:
+      - organization
+  /v1/organization/{organization_id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: organization_id
+        in: path
+        name: organization_id
+        required: true
+        type: string
+      - description: inn
+        in: query
+        name: inn
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.Organization'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Get Organization
+      tags:
+      - organization
+    put:
+      consumes:
+      - application/json
+      description: API for updating organization
+      parameters:
+      - description: organization_id
+        in: path
+        name: organization_id
+        required: true
+        type: string
+      - description: organization
+        in: body
+        name: organization
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.CreateUpdateOrganizationSwag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template_variables.CreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Update Organization
+      tags:
+      - organization
+  /v1/organizations/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: API for getting all organizations
+      parameters:
+      - description: type
+        in: query
+        name: type
+        type: string
+      - description: search
+        in: query
+        name: search
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.GetAllOrganizationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Getting All Organizations
+      tags:
+      - organization
+  /v1/permission:
+    get:
+      consumes:
+      - application/json
+      description: API for getting all rolees
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.GetAllPermissionsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Getting All permissions
+      tags:
+      - permission
+    post:
+      consumes:
+      - application/json
+      description: API for creating permission
+      parameters:
+      - description: permission
+        in: body
+        name: permission
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.CreateUpdatePermissionSwag'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/template_variables.CreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Create permission
+      tags:
+      - permission
+  /v1/permission/{permission_id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: permission_id
+        in: path
+        name: permission_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.Permission'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Get Permission
+      tags:
+      - permission
+    put:
+      consumes:
+      - application/json
+      description: API for updating permission
+      parameters:
+      - description: permission_id
+        in: path
+        name: permission_id
+        required: true
+        type: string
+      - description: permission
+        in: body
+        name: permission
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.CreateUpdatePermissionSwag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template_variables.CreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Update permission
+      tags:
+      - permission
+  /v1/role:
+    get:
+      consumes:
+      - application/json
+      description: API for getting all rolees
+      parameters:
+      - description: name
+        in: query
+        name: name
+        type: string
+      - description: organization_id
+        in: query
+        name: organization_id
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.GetAllRolesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Getting All roles
+      tags:
+      - role
+    post:
+      consumes:
+      - application/json
+      description: API for creating role
+      parameters:
+      - description: role
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.CreateUpdateRoleSwag'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/template_variables.CreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Create role
+      tags:
+      - role
+  /v1/role/{role_id}:
+    delete:
+      consumes:
+      - application/json
+      description: API for deleting role
+      parameters:
+      - description: role_id
+        in: path
+        name: role_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template_variables.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Delete Role
+      tags:
+      - role
+    get:
+      consumes:
+      - application/json
+      description: API for getting role
+      parameters:
+      - description: role_id
+        in: path
+        name: role_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Get role
+      tags:
+      - role
+    put:
+      consumes:
+      - application/json
+      description: API for updating role
+      parameters:
+      - description: role_id
+        in: path
+        name: role_id
+        required: true
+        type: string
+      - description: role
+        in: body
+        name: role
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.CreateUpdateRoleSwag'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/template_variables.CreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Update role
+      tags:
+      - role
+  /v1/role/code:
+    get:
+      consumes:
+      - application/json
+      description: API for getting all rolees by code
+      parameters:
+      - description: code
+        in: query
+        name: code
+        type: integer
+      - description: organization_id
+        in: query
+        name: organization_id
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user_service.GetAllRolesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      summary: Getting All roles by code
+      tags:
+      - role
+  /v1/update-password:
+    post:
+      consumes:
+      - application/json
+      description: API to update user password
+      parameters:
+      - description: Update password
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.UpdatePassword'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/template_variables.EmptyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: update user password
+      tags:
+      - auth
+  /v1/update-password/{user_id}:
+    post:
+      consumes:
+      - application/json
+      description: API to update user password
+      parameters:
+      - description: User id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: Update password
+        in: body
+        name: password
+        required: true
+        schema:
+          $ref: '#/definitions/var_user_service.UpdatePassword'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/template_variables.EmptyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/template_variables.FailureResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: update user password
+      tags:
+      - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

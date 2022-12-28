@@ -1,0 +1,12 @@
+syntax="proto3";
+
+package content;
+option go_package="genproto/content_service";
+import "handbooks.proto";
+import "google/protobuf/empty.proto";
+
+service HandbooksService {
+    rpc Create(Handbook) returns (google.protobuf.Empty) {}
+    rpc Get(GetHandbooksRequest) returns (GetHandbooksResponse) {}
+    rpc GetOne(GetOneRequest) returns (GetOneHandbookResponse) {}
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package genproto;
+option go_package="genproto/user_service";
+
+message IdResponse {
+    string id = 1;
+}
+
+message IdRequest {
+    string id = 1;
+}
+
+message USExistsResponse {
+    bool exist = 1;
+}

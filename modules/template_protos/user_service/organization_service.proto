@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package genproto;
+
+
+option go_package="genproto/user_service";
+import "organization.proto";
+import "general.proto";
+import "google/protobuf/empty.proto";
+service OrganizationService {
+    rpc Create(CreateUpdateOrganization) returns (IdResponse){}
+    rpc Get(GetOrganizationRequest) returns (Organization){}
+    rpc GetAll(GetAllOrganizationsRequest) returns (GetAllOrganizationsResponse){}
+    rpc Update(CreateUpdateOrganization) returns(google.protobuf.Empty) {}
+    rpc GetAllForDashboard(GetAllOrganizationsRequest) returns (GetAllOrganizationResponse){}
+}

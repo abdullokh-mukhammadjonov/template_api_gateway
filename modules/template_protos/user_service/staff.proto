@@ -1,0 +1,173 @@
+syntax = "proto3";
+
+package genproto;
+option go_package = "genproto/user_service";
+import "role.proto";
+import "organization.proto";
+
+message LoginRequest {
+  string login = 1;
+}
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  string soato = 3;
+  Role role = 4;
+  bool verified = 5;
+}
+
+message StaffCity {
+  string id = 1;
+  string ru_name = 2;
+  string name = 3;
+  uint32 soato = 4;
+  uint32 code = 5;
+}
+
+message StaffDiscrit {
+  string id = 1;
+  string ru_name = 2;
+  string name = 3;
+  uint64 soato = 4;
+  uint32 code = 5;
+}
+
+message StaffRegion {
+  string id = 1;
+  string ru_name = 2;
+  string name = 3;
+  uint32 soato = 4;
+  uint32 code = 5;
+}
+
+message LoginInfo {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string full_name = 4;
+  string user_type = 5;
+  string login = 6;
+  string role_id = 7;
+  string soato = 8;
+  string password = 9;
+  string organization_id = 10;
+  Role role = 11;
+  bool verified = 12;
+  bool confirmed = 13;
+}
+
+message LoginExistsRequest {
+  string login = 1;
+}
+message Staff {
+  string id = 1;
+  string unique_name = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string middle_name = 5;
+  string phone_number = 6;
+  string user_type = 7;
+  string address = 8;
+  string passport_number = 9;
+  string passport_issue_date = 10;
+  string passport_issue_place = 11;
+  string email = 12;
+  string login = 13;
+  string password = 14;
+  string soato = 19;
+  string pinfl = 17;
+  int32 external_id = 15;
+  int64 inn = 16;
+  int64 policy = 18;
+  GetRole role = 20;
+  Organization organization = 21;
+  StaffCity city = 22;
+  StaffRegion region = 23;
+  string created_at = 24;
+  string updated_at = 25;
+  bool verified = 26;
+  bool status = 27;
+  bool confirmed = 28;
+  string one_id_login = 29;
+  string organization_inn = 30;
+  string last_login = 31;
+  string last_login_type = 32;
+  string organization_id = 33;
+}
+
+message CreateUpdateStaff {
+  string id = 1;
+  string unique_name = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string middle_name = 5;
+  string phone_number = 6;
+  string user_type = 7;
+  string address = 8;
+  string passport_number = 9;
+  string passport_issue_date = 10;
+  string passport_issue_place = 11;
+  string email = 12;
+  string login = 13;
+  string password = 14;
+  string last_login = 15;
+  string extra_info = 16;
+  string role_id = 17;
+  string organization_id = 18;
+  string soato = 19;
+  int32 external_id = 20;
+  int64 inn = 21;
+  string pinfl = 22;
+  int64 policy = 23;
+  StaffCity city = 24;
+  StaffRegion region = 25;
+  bool verified = 26;
+  bool status = 27;
+  bool confirmed = 28;
+  string one_id_login = 29;
+  string organization_inn = 30;
+}
+
+message GetAllStaffsRequest {
+  uint32 page = 1;
+  uint32 limit = 2;
+  string soato = 3;
+  string phone_number = 4;
+  string organization_id = 5;
+  string search_string = 6;
+  string role_id = 7;
+  bool status = 8;
+  string city_id = 9;
+  string region_id =10;
+  bool confirmed = 11;
+  string one_id_login = 12;
+  string use_confirmed = 13;
+  string last_login =14;
+  string use_status=15;
+}
+
+message GetAllStaffsResponse {
+  repeated Staff staffs = 1;
+  uint32 count = 2;
+}
+
+message PasswordUpdateRequest{
+  string new_password = 1;
+  string old_password = 2;
+  string user_id = 3;
+}
+
+message EntityParallelAction {
+  string organization_name = 1;
+  string conclusion = 2;
+  string concl_time = 3;
+}
+
+message StaffExistsResponse {
+  uint32 staff_count = 1;
+}
+
+message UpdateLoginTypeReq {
+  string id =1;
+  string type = 2;
+}

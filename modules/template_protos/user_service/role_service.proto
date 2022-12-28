@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package genproto;
+
+option go_package="genproto/user_service";
+
+import "general.proto";
+import "role.proto";
+import "google/protobuf/empty.proto";
+
+service RoleService {
+  rpc CreateRole(CreateUpdateRole) returns (IdResponse) {}
+  rpc GetRole(IdRequest) returns (Role) {}
+  rpc GetRoleOrganization(IdRequest) returns (GetRoleOrganizationResponse) {}
+  rpc GetAllRoles(GetAllRolesRequest) returns (GetAllRolesResponse) {}
+  rpc GetAllRolesByCode(GetAllRolesByCodeRequest) returns (GetAllRolesResponse) {}
+  rpc UpdateRole(CreateUpdateRole) returns (google.protobuf.Empty) {}
+  rpc DeleteRole(IdRequest) returns (google.protobuf.Empty) {}
+  rpc CreatePermission(Permission) returns (IdResponse) {}
+  rpc GetPermission(IdRequest) returns (Permission) {}
+  rpc GetAllPermissions(GetAllPermissionsRequest) returns (GetAllPermissionsResponse) {}
+  rpc UpdatePermission(Permission) returns (google.protobuf.Empty) {}
+}

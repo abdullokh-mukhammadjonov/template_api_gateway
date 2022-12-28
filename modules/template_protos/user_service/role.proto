@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package genproto;
+option go_package="genproto/user_service";
+import "organization.proto";
+message Role {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    int32 code = 4;
+    bool status = 5;
+    Organization organization = 6;
+    repeated Permission permissions = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+message GetRole {
+    string id = 1;
+    string name = 2;
+    string description = 3;
+    int32 code = 4;
+    bool status = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+message GetRoleOrganizationResponse {
+    string organization_id = 1;
+}
+message CreateUpdateRole {
+    string id = 1;
+    string organization_id = 2;
+    string name = 3;
+    string description = 4;
+    int32 code = 5;
+    int32 external_id = 6;
+    bool status = 7;
+    repeated string permissions = 8;
+}
+message Permission {
+    string id = 1;
+    string name = 2;
+    string ru_name = 3;
+    string description = 4;
+    string label = 5;
+}
+message GetAllRolesRequest {
+    uint32 page = 1;
+    uint32 limit = 2;
+    string name = 3;
+    string organization_id = 4;
+}
+
+message GetAllRolesByCodeRequest {
+    uint32 page = 1;
+    uint32 limit = 2;
+    uint32 code = 3;
+    string organization_id = 4;
+}
+
+message GetAllRolesResponse {
+    repeated Role roles = 1;
+    uint32 count = 2;
+}
+
+message GetAllPermissionsRequest {
+    uint32 page = 1;
+    uint32 limit = 2;
+    string name = 3;
+}
+  
+message GetAllPermissionsResponse {
+    repeated Permission permissions = 1;
+    uint32 count = 2;
+}
+
+

@@ -1,0 +1,54 @@
+           ** Makefile  header
+CURRENT_DIR=$(shell pwd)
+APP=$(shell basename ${CURRENT_DIR})
+APP_CMD_DIR=${CURRENT_DIR}/cmd
+
+REGISTRY=gitlab.udevs.io:5050
+TAG=latest
+ENV_TAG=latest
+PROJECT_NAME=ekadastr
+
+
+            ** .build_info
+APP=ek_admin_api_gateway
+REGISTRY=gitlab.udevs.io:5050
+PROJECT_NAME=ekadastr
+
+
+            ** .gitlab-ci.yml
+services:
+  - name: gitlab.udevs.io:5050/docker/docker:dind
+    alias: docker
+
+before_script:
+  ## docker login
+  - docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
+  ## install dependencies
+  - apk update && apk --no-cache --update add build-base git
+
+stages:
+  - build
+  - deploy
+
+build_image_prod:
+  stage: build
+  script:
+#    - make update-sub-module
+    - make build-image TAG=$CI_PIPELINE_IID PROJECT_NAME=$CI_PROJECT_NAMESPACE
+    - make push-image TAG=$CI_PIPELINE_IID PROJECT_NAME=$CI_PROJECT_NAMESPACE
+  only:
+    - master
+
+deploy_to_prod:
+  stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$GITLAB_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - apk update && apk add build-base
+
+  script:
+    - sshpass -p $EKADASTR_PROD_PASSWORD ssh -o StrictHostKeyChecking=no $EKADASTR_PROD_USER@$EKADASTR_PROD_HOST 'docker service update --with-registry-auth --image '$CI_REGISTRY'/'$CI_PROJECT_NAMESPACE'/'$CI_PROJECT_NAME':'$CI_PIPELINE_IID' '$CI_PROJECT_NAME''
+  only:
+    - master

@@ -1,0 +1,6 @@
+[submodule "template_protos"]
+	path = template_protos
+	url = git@github.com:abdullokh-mukhammadjonov/template_protos.git
+[submodule "template_variables"]
+	path = template_variables
+	url = git@github.com:abdullokh-mukhammadjonov/template_variables.git
